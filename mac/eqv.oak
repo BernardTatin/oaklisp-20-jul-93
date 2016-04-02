@@ -1,0 +1,9 @@
+;;; Copyright (C) 1988, Kevin Lang & Barak Pearlmutter, CMU Oaklisp Project.
+
+(define-constant eqv?
+
+  (add-method ((make (mix-types oc-mixer (list foldable-mixin operation)))
+	       (object) x y)
+    (eq? x y)))
+
+;;; eof

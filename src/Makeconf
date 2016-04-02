@@ -1,0 +1,15 @@
+#VAX_MACH	= vax_mach
+## SUN2_MACH	= sun2_mach
+#SUN_MACH	= sun3_mach
+#SUN4_MACH	= sun4_mach
+#IBMRT_MACH	= rt_mach
+## BALANCE_MACH	= balance_mach
+#MMAX_MACH	= mmax_mach
+#PMAX_MACH	= pmax_mach
+#
+#OBJECTDIR = $($(MACHINE)_MACH)
+
+VPATH = ../src
+
+# OBJECTDIR = @$(TARGET_MACHINE).$(VERSION)
+OBJECTDIR = $(target_machine)_mach

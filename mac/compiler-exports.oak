@@ -1,0 +1,16 @@
+;;;Copyright (C) Barak Pearlmutter & Kevin Lang, CMU Oaklisp Project, 1987
+
+(export-sharing-cell compiler-locale system-locale 'cc)
+(export-sharing-cell compiler-locale system-locale 'compile-file)
+
+
+; The following variable might already be living in system-locale
+; (rather than compiler locale) due to possible forward 
+; references in the cold world files.
+
+(when (not (variable-here? system-locale 'compile-code-fragment))
+  (export-sharing-cell compiler-locale system-locale 'compile-code-fragment))
+
+
+
+;;; eof

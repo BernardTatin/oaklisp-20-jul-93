@@ -1,0 +1,35 @@
+;;; Copyright (C) 1988,7, Barak Pearlmutter & Kevin Lang, CMU Oaklisp Project.
+
+;;; This loads the scheme compatibility package.
+
+;;; All the files get compiled in system-locale, as none of them use
+;;; internal defines or rest args.
+
+(define-instance scheme-locale locale (list system-locale))
+
+(load-oa-file scheme-locale "scheme-macros")
+(load-oa-file scheme-locale "scheme")
+
+(set! top-level
+      (lambda ()
+	(format #t
+"~%Welcome to Oaklisp 1.1 -
+  No Warranty expressed or implied.  Refer to the source for information.
+  Copyright (C) 1989, 1988, 1987  Barak Pearlmutter and Kevin Lang.
+  Scheme is preloaded; you are in an R3RS compatible locale.~%")
+	(set! current-locale scheme-locale)
+	(read-eval-print-loop)))
+
+
+
+#||
+(define (scheme)
+  (format #t "~&To get back to Oaklisp type (SET! (FLUID CURRENT-LOCALE) SYSTEM-LOCALE)~%")
+  (set! current-locale scheme-locale))
+
+(format #t "~&To get to an R3RS compatible locale, type (SCHEME)~%")
+
+(scheme)
+||#
+
+;;; eof

@@ -1,0 +1,58 @@
+;;; Copyright (C) 1988 Barak Pearlmutter & Kevin Lang.
+
+;;; This defines a new top level that's just for compiling files.
+
+(define (batch-compile-files)
+  (catch-errors (user-interrupt
+		 (lambda (err)
+		   (exit 1 "Compilation interrupted; aborting.~%")))
+    (catch-errors (general-error
+		   (lambda (err)
+		     (format standard-error
+			     "~&An error occured while parsing user input.~%")
+		     (report err standard-error)
+		     (exit 2 "")))
+      (set! compiler-noisiness 0)
+      (let* ((locale-name (read standard-input))
+	     (the-locale (eval locale-name system-locale)))
+	(iterate aux ((first? #t))
+	  (skip-whitespace standard-input)
+	  (when (eq? (peek-char standard-input) the-eof-token)
+	    (exit 0 ""))
+
+	  ;; As an efficiency measure, flush garbage now:
+	  (when (not first?) (%gc))
+
+	  (let ((file-name (read-ws-terminated-string standard-input)))
+	    (format standard-error "~&  Compiling ~S in ~A..."
+		    file-name locale-name)
+	    (flush standard-error)
+	    (catch-errors
+		(general-error
+		 (lambda (err)
+		   (format standard-error
+			   "~&An error occured while compiling ~S:~%   "
+			   file-name)
+		   (bind (( print-level 4) (print-length 7))
+		     (report err standard-error))
+		   (exit 1 "Compilation aborted abnormally.~%")))
+	      (compile-file the-locale file-name))
+	    (format standard-error " complete.~%")
+	    (aux #f)))))))
+
+;;; This function reads the next string from the given stream, using
+;;; whitespace to terminate strings.  The single escape character may be
+;;; used to include whitespace in the strings read.
+
+(define (read-ws-terminated-string stream)
+  (string (read-charlist-until2
+	     stream
+	     (lambda (c)
+	       (or (eq? c the-eof-token)
+		   (eq? (nth standard-read-table c) 'whitespace))))))
+
+;;; This will make Oaklisp boot to the above function.
+
+(set! top-level batch-compile-files)
+
+;;; eof
