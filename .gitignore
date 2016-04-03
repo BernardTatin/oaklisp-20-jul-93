@@ -2,3 +2,5 @@
 *.lo
 /src/src/emulator
 /nbproject/
+debug
+.*.swp
