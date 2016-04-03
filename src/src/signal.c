@@ -52,7 +52,7 @@ static void intr_proc(int sig, siginfo_t *scp, void *code)
 }
 #endif
 
-void enable_signal_polling()
+void enable_signal_polling(void)
 {
   signal_poll_flag = 0;
 #if !defined(__with_signal_action)
@@ -68,7 +68,7 @@ void enable_signal_polling()
 #endif
 }
 
-void disable_signal_polling()
+void disable_signal_polling(void)
 {
   signal_poll_flag = 0;
 #if !defined(__with_signal_action)
@@ -106,9 +106,5 @@ void disable_signal_polling()
 }
 #endif USG
 
-void clear_signal()
-{
-  signal_poll_flag = 0;
-}
 
 #endif
