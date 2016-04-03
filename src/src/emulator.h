@@ -349,7 +349,7 @@ unsigned long get_length();
 ref ref_to_wp();
 void rebuild_wp_hashtable();
 
-void gc();
+void gc(bool pre_dump, bool full_gc, char *reason, long amount);
 void gc_printref();
 void enable_signal_polling(), disable_signal_polling(), clear_signal();
 #endif

@@ -78,8 +78,7 @@ ref *gc_examine_ptr = &gc_examine_buffer[0];
 
 
 
-void gc_printref(refin)
-     ref refin;
+void gc_printref(ref refin)
 {
   long i;
   char suffix = '?';
@@ -125,8 +124,7 @@ void gc_printref(refin)
    that it will work in the middle of a gc, when an object's type might
    already have been transported. */
 
-unsigned long gc_get_length(x)
-     ref x;
+unsigned long gc_get_length(ref x)
 {
   if TAG_IS(x,PTR_TAG)
     {
@@ -169,8 +167,7 @@ unsigned long gc_get_length(x)
 
 
 
-ref gc_touch0(r)
-     ref r;
+ref gc_touch0(ref r)
 {
   ref *p = ANY_TO_PTR(r);
 
@@ -273,9 +270,7 @@ ref gc_touch0(r)
 
 
 
-ref loc_touch0(r, warn_if_unmoved)
-     ref r;
-     bool warn_if_unmoved;
+ref loc_touch0(ref r, const bool warn_if_unmoved)
 {
   ref *p = LOC_TO_PTR(r);
 
@@ -331,7 +326,7 @@ ref loc_touch0(r, warn_if_unmoved)
 
 
 
-void scavenge()
+void scavenge(void)
 {
   ref *scavenge_p;
 
@@ -342,7 +337,7 @@ void scavenge()
 
 
 
-void loc_scavenge()
+void loc_scavenge(void)
 {
   ref *scavenge_p;
 
@@ -360,8 +355,7 @@ void loc_scavenge()
 #define GGC_CHECK(r) GC_CHECK(r,"r")
 
 /* True if r seems like a messed up reference. */
-bool gc_check(r)
-     ref r;
+bool gc_check(ref r)
 {
   return (r&PTR_MASK) && !NEW_PTR(ANY_TO_PTR(r))
     && (full_gc || !SPATIC_PTR(ANY_TO_PTR(r)));
@@ -369,9 +363,7 @@ bool gc_check(r)
 
 
 
-void GC_CHECK(x,st)
-  ref x;
-  char *st;
+void GC_CHECK(ref x, char *st)
 {
   if (gc_check((x)))
     {
@@ -389,10 +381,7 @@ void GC_CHECK(x,st)
 
 
 
-void GC_CHECK1(x,st,i)
-     ref x;
-     char *st;
-     long i;
+void GC_CHECK1(ref x, char *st, const long i)
 {
   if (gc_check((x)))
     {
@@ -414,8 +403,7 @@ void GC_CHECK1(x,st,i)
 
 
 
-unsigned short *pc_touch(o_pc)
-     unsigned short *o_pc;
+unsigned short *pc_touch(unsigned short *o_pc)
 {
   ref *pcell = (ref *)((unsigned long)o_pc & ~TAG_MASKL);
 
@@ -426,8 +414,7 @@ unsigned short *pc_touch(o_pc)
 
 
 
-void set_external_full_gc(full)
-     bool full;
+void set_external_full_gc(const bool full)
 {
   full_gc = full;
 }
@@ -437,11 +424,11 @@ void set_external_full_gc(full)
 
 
 
-void gc(pre_dump, full_gc, reason, amount)
-     bool pre_dump;		/* About to dump world?  (discards stacks) */
-     bool full_gc;		/* Reclaim garbage from spatic space too? */
-     char *reason;		/* The reason for this GC, in English. */
-     long amount;		/* The amount of space that is needed. */
+void gc(bool pre_dump, bool full_gc, char *reason, long amount)
+     // bool pre_dump;		/* About to dump world?  (discards stacks) */
+     // bool full_gc;		/* Reclaim garbage from spatic space too? */
+     // char *reason;		/* The reason for this GC, in English. */
+     // long amount;		/* The amount of space that is needed. */
 {
   long old_taken;
   ref *p;
