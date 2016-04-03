@@ -46,7 +46,7 @@ emulator: $(OBJFILES)
 	$(CC) $(CFLAGS) $(LDCFLAGS) -o $@ $(OBJFILES)
 
 clean:
-	$(RM) $(OBJFILES)
+	$(RM) $(OBJFILES) emulator
 
 instrs.c: instruction-table.oak ../../mac/assembler.oak
 	echo '(set (fluid current-locale) compiler-locale)	\

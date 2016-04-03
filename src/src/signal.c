@@ -19,7 +19,6 @@ int signal_poll_flag = 0;
 #endif
 
 
-#ifdef unix
 
 #include <signal.h>
 
@@ -32,14 +31,14 @@ int signal_poll_flag = 0;
 
 #ifdef BSD_OR_MACH
 
-#if !defined(__SunOS)
+#if !defined(__with_signal_action)
 static struct sigvec signal_trap_vec = {0,0,0};
 #else
 struct sigaction action;
 #endif
 
 /*ARGSUSED*/
-#if !defined(__SunOS)
+#if !defined(__with_signal_action)
 static INTR_HANDLER_TYPE intr_proc(sig,code,scp)
      int sig, code;
      struct sigcontext *scp;
@@ -56,7 +55,7 @@ static void intr_proc(int sig, siginfo_t *scp, void *code)
 void enable_signal_polling()
 {
   signal_poll_flag = 0;
-#if !defined(__SunOS)
+#if !defined(__with_signal_action)
   signal_trap_vec.sv_handler = intr_proc;
   if (sigvec(SIGINT, &signal_trap_vec, (struct sigvec *)NULL))
     fprintf(stderr, "Unable to enable signal polling.\n");
@@ -72,7 +71,7 @@ void enable_signal_polling()
 void disable_signal_polling()
 {
   signal_poll_flag = 0;
-#if !defined(__SunOS)
+#if !defined(__with_signal_action)
   signal_trap_vec.sv_handler=SIG_DFL;
   if (sigvec(SIGINT, &signal_trap_vec, (struct sigvec *)NULL))
     fprintf(stderr, "Unable to disable signal polling.\n");
@@ -112,6 +111,4 @@ void clear_signal()
   signal_poll_flag = 0;
 }
 
-#endif unix
-
-#endif SIGNAL
+#endif

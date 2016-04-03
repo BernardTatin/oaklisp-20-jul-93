@@ -17,12 +17,12 @@
 #define READ_BINARY_MODE "r+b"
 #define WRITE_BINARY_MODE "w+b"
 
-#else Mac_LSC
+#else // Mac_LSC
 
 #define READ_BINARY_MODE READ_MODE
 #define WRITE_BINARY_MODE WRITE_MODE
 
-#endif Mac_LSC
+#endif // Mac_LSC
 
 
 #ifdef CANT_FLUSH_STD
@@ -40,6 +40,16 @@
 #endif
 
 
+#if defined(__C11FEATURES__)
+#include <stdbool.h>
+
+#ifndef FALSE
+#define FALSE	false
+#endif
+#ifndef TRUE
+#define TRUE	true
+#endif
+#else
 typedef int bool;
 
 #ifndef FALSE
@@ -48,6 +58,7 @@ typedef int bool;
 
 #ifndef TRUE
 #define TRUE	1
+#endif
 #endif
 
 
@@ -308,6 +319,7 @@ extern int signal_poll_flag;
 #include "stacks.h"
 #include "Proto.h"
 
+#if !defined(__C11FEATURES__)
 extern void exit(int);
 
 #ifdef unix
@@ -319,6 +331,27 @@ extern void free(char *);
 #ifdef Mac_LSC
 #include <storage.h>
 #endif
+#endif
+#else
+void free_space(), alloc_space(), realloc_space();
+char *my_malloc();
+
+void printref(), init_wp();
+
+void read_world();
+ref read_ref();
+void dump_world();
+
+long string_to_int();
+
+unsigned long get_length();
+
+ref ref_to_wp();
+void rebuild_wp_hashtable();
+
+void gc();
+void gc_printref();
+void enable_signal_polling(), disable_signal_polling(), clear_signal();
 #endif
 
 #else

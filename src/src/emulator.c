@@ -5,9 +5,11 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#if defined(__SunOS)
+#if defined(__C11FEATURES__)
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #endif
 
 #include "emulator.h"
@@ -100,8 +102,7 @@ unsigned short *g_e_pc;
 
 #define NEW_STORAGE e_uninitialized
 
-void maybe_dump_world_aux(dumpstackp)
-     int dumpstackp;
+void maybe_dump_world_aux(int dumpstackp)
 {
   if (dumpstackp > 2)		/* 0,1,2 are normal exits. */
     {
@@ -126,8 +127,7 @@ void maybe_dump_world_aux(dumpstackp)
 
 
 
-void printref(refin)
-     ref refin;
+void printref(ref refin)
 {
   unsigned long i;
   char suffix = '?';
@@ -235,10 +235,7 @@ ref elem, *loclist;
   ((unsigned short *)&REF_SLOT(seg,CODE_CODE_START_OFF))
 
 
-void old_find_method_type_pair(op, obj_type, method_ptr, type_ptr)
-     register ref op;
-     register ref obj_type;
-     ref *method_ptr, *type_ptr;
+void old_find_method_type_pair(ref op, ref obj_type, ref *method_ptr, ref *type_ptr)
 {
   register ref alist;
   register ref *locl = NULL;
@@ -294,10 +291,7 @@ void old_find_method_type_pair(op, obj_type, method_ptr, type_ptr)
 
 ref later_lists[100];
 
-void find_method_type_pair(op, obj_type, method_ptr, type_ptr)
-     register ref op;
-     ref obj_type;
-     ref *method_ptr, *type_ptr;
+void find_method_type_pair(ref op, ref obj_type, ref *method_ptr, ref *type_ptr)
 {
   register ref alist;
   register ref *locl = NULL;
@@ -352,9 +346,7 @@ void find_method_type_pair(op, obj_type, method_ptr, type_ptr)
    string and returns the equivalent C string.  You must remember to
    free() the storage returned by this routine. */
 
-char *oak_c_string(len, p)
-     unsigned int len;
-     unsigned long *p;
+char *oak_c_string(unsigned int len, unsigned long *p)
 {
   char *stuff = my_malloc((long)(len+1));
   int i=0, j=0;
@@ -389,9 +381,7 @@ char *oak_c_string(len, p)
 char *dump_file = NULL;
 
 
-void crunch_args(argc, argv)
-     int argc;
-     char **argv;
+void crunch_args(int argc, char **argv)
 {
   char *world_name;
   char *program_name = argv[0];
@@ -506,9 +496,7 @@ void crunch_args(argc, argv)
 #define main _main
 #endif
 
-int main(argc,argv)
-     int argc;
-     char **argv;
+int main(int argc, char **argv)
 {
   unsigned int e_nargs;
 

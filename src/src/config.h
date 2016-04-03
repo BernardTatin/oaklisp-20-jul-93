@@ -16,7 +16,25 @@
 #define DEFAULT_NEW_SPACE_SIZE	(256*1024L)
 #endif
 
-
+#if defined(__C11FEATURES__)
+#if !defined(unix)
+#define unix
+#endif
+#if !defined(__unix)
+#define __unix
+#endif
+#if !defined(__unix__)
+#define __unix__
+#endif
+#define SIGNALS
+#if defined(__SunOS)
+#define __with_signal_action
+#define BSD_OR_MACH
+#endif
+#define WORDSIZE 32
+#define PROTOTYPES
+#define ASHR2(x) ((x)>>2)
+#else
 
 /* I'd love to be able to case things out here: */
 
@@ -56,7 +74,7 @@
 
 #ifdef AMIGA
 #define MALLOC_STACK_BUFFER 
-#define MALLOC_WP_TABLE
+#define MALLOC_WP_TABLE__C11FEATURES__
 #endif
 
 
@@ -210,6 +228,7 @@
 
 #ifndef HAVE_LONG_LONG
 /* #define DOUBLES_FOR_OVERFLOW */
+#endif
 #endif
 
 
