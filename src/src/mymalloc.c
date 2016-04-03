@@ -7,8 +7,7 @@
 #include "emulator.h"
 
 
-char *my_malloc(i)
-     long i;
+char *my_malloc(const long i)
 {
 #ifdef Mac_LSC
   char *p;
@@ -32,9 +31,7 @@ char *my_malloc(i)
 }
 
 
-void realloc_space(pspace, pfree)
-     space *pspace;
-     ref *pfree;
+void realloc_space(space *pspace, ref *pfree)
 {
   long new_size = pfree - pspace->start;
   pspace->size = new_size;
@@ -46,8 +43,7 @@ void realloc_space(pspace, pfree)
 
 
 
-void free_space(pspace)
-     space *pspace;
+void free_space(space *pspace)
 {
 #ifdef UNALIGNED
   free((char *)pspace->start - pspace->offset);
@@ -63,8 +59,7 @@ void free_space(pspace)
 
 
 
-void alloc_space(pspace)
-     space *pspace;
+void alloc_space(space *pspace)
 {
   char *p = my_malloc(sizeof(ref) * pspace->size);
 
