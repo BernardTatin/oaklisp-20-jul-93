@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#if defined(__SunOS)
+#include <stdlib.h>
+#endif
 #include "emulator.h"
 
 
@@ -188,7 +191,11 @@ void dump_binary_world(just_new)
 
 #ifndef AMIGA
 #ifndef mips
+#ifndef __SunOS
   extern fwrite();
+#else
+#include <stdio.h>
+#endif
 #endif
 #endif
 

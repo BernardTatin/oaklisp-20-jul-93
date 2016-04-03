@@ -1,0 +1,16 @@
+#!/bin/csh -f
+if (($#argv != 1)) then
+  set foo = "$0"
+  echo "Usage: $foo:t world"
+  echo 'Establish symbolic links from ../lib/oaklisp.{cold,olc,olz} to world.'
+  exit 1
+endif
+
+set file = "$1"
+
+foreach e (cold {ol,lo}{,c,z,s})
+  rm -f ../lib/oaklisp.$e
+  ln -s ../mac/${file}.$e ../lib/oaklisp.$e
+end
+
+echo "Installed $file."

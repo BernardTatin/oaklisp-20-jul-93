@@ -1,0 +1,45 @@
+#!/bin/csh -f
+if ($#argv > 1) then
+  set foo = "$0"
+  echo "Usage: $foo:t [worldname]"
+  echo 'Renames the world "new" to "worldname" and links "oaklisp.ol" to it.'
+  exit 2
+endif
+
+if ("$cwd:t" != "mac") then
+  echo "Shouldn't you be in the mac directory?"
+  exit 3
+endif
+
+if ($#argv == 1) then
+  set file = "$1"
+else
+  set file = `whenis -f '%3month%day' today`
+  foreach x ('' A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+    if ( ! ( -e "$file$x.cold" )) then
+      set file = "$file$x"
+      echo Moving new to $file.
+      goto foundone
+    endif
+  end
+  echo All names beginning $file already taken.
+  exit 1
+endif
+
+foundone:
+
+set exts = (.cold .sym .{ol,lo}{,c,z,s})
+
+foreach e ($exts)
+  if (! -e "new$e") then
+    echo "Aborting installation; the file new$e does not exist."
+    exit 1
+  endif
+end
+
+foreach e ($exts)
+  rm -f    $file$e
+  ln new$e $file$e
+end
+
+$OAKPATH/bin/reinstall $file

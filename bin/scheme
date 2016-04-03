@@ -1,0 +1,10 @@
+#!/bin/csh -f
+if (! $?OAKPATH) setenv OAKPATH /usr/misc/.oaklisp
+set switches = ($argv[1-]:q)
+if ($?OAKSCHEME) then
+  set switches = ($OAKSCHEME $switches)
+endif
+if ($?OAKLISP) then
+  set switches = ($OAKLISP $switches)
+endif
+exec $OAKPATH/etc/emulator $switches $OAKPATH/lib/oaklisp.%%s

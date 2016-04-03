@@ -108,7 +108,7 @@ typedef unsigned long ref;
 #define MIN_REF		((ref)(1L<<(WORDSIZE-1)))
 /* Check if high three bits are equal. */
 #define OVERFLOWN_INT(i,code)					\
-{ register highcrap = ((unsigned long)(i)) >> (WORDSIZE-3);	\
+{ register int highcrap = ((unsigned long)(i)) >> (WORDSIZE-3);	\
   if ((highcrap != 0x0) && (highcrap != 0x7)) {code;} }
 
 #else

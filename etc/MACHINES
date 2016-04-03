@@ -1,0 +1,61 @@
+This is information about various ports of Oaklisp, and their status.
+
+Solaris 11 x86
+    Work in progress
+
+Sun3
+	Works fine.
+
+VAX
+	Works fine.
+
+Convex
+	Works fine.
+
+Sun4 (SPARC)
+	Works fine.
+
+DEC PMAX
+	Works fine.
+
+IBM/RT:
+	High C compiler (hc) works fine, pcc (cc) has some problems
+	with the generated assembly having bad offsets which freaks
+	the assembler into warning messages, and into rounding the
+	offsets the wrong way.  I have a fixed assembler available,
+	it's just a few lines of bad code in IBM's source.
+
+IBM 6000 series (their superscaler workstations)
+	Works fine.
+
+Macintosh:
+	Works fine.
+	(Changes from Bruce.Horn@cs.cmu.edu merged and tested)
+
+Amiga:
+	Works fine.
+	(Changes from Eugen Bacic <bacic@ncs.dnd.ca> 4-Oct-90 merged:
+	To compile it on an Amiga with Lattice C:
+			lc -dAMIGA -dFAST -L -m0t -b #?.c
+	This will define FAST and AMIGA, tell the compiler to Link
+	after compiling all the various parts, compile the code for a
+	68000 and time optimizations using 32bit addressing.  Doing
+	full optimizations blows away Lattice C 5.04 so I didn't use
+	it.  The only slow part is loading (about 10 seconds on an
+	'030 Amiga and 1 minute on a stock 68000 Amiga).  Once the
+	system is up it is fairly responsive.  Also, you need from
+	just over a megabyte (for Scheme) to 3 megabytes (for Liszt).
+	But, everything loads and works.  I mostly use Scheme so
+	that's been tested more than the others.
+
+	I tried Manx C but couldn't quite get it to compile)
+
+80x86, MSDOS
+	Works fine w/ 32-bit pointers and large memory model.  Whatever
+	that means.
+
+Ridge PYRAMID
+	Works fine.  "Loves all those registers."
+
+IBM 360/370 machines
+	Works fine, "even with 24-bit pointers."

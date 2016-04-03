@@ -5,6 +5,10 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#if defined(__SunOS)
+#include <stdlib.h>
+#include <unistd.h>
+#endif
 
 #include "emulator.h"
 #include "stacks.h"
@@ -78,7 +82,7 @@ ref *e_bp, *e_env, e_t, e_nil,
   e_fixnum_type, e_loc_type, e_cons_type, e_env_type, *e_subtype_table,
   e_object_type, e_segment_type, e_boot_code, e_code_segment,
   *e_arged_tag_trap_table, *e_argless_tag_trap_table, e_current_method,
-  e_uninitialized, e_method_type, e_operation_type;   /*qqq*/;
+  e_uninitialized, e_method_type, e_operation_type;   /*qqq*/
 
 unsigned long
   e_next_newspace_size,

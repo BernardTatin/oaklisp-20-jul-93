@@ -1,0 +1,38 @@
+#!/bin/csh -f
+
+if ($#argv > 1) then
+  set foo = "$0"
+  echo "Usage: $foo:t [name-of-release]"
+  echo "If no name is supplied, the current date is used."
+  exit 2
+endif
+
+if ($#argv == 1) then
+  set name = oaklisp-$1
+else
+  set name = `whenis -f 'oaklisp-%day-%3month-%2year' today`
+endif
+
+if (-e $name.tar.Z) then
+  echo "$name.tar.Z already exists."
+  exit 1
+endif
+
+echo Creating $name ...
+
+copy -2 release-skeleton $name
+find $name -name "*~" -exec rm {} \;
+
+foreach d (. mac src/src bin etc man lib)
+  echo Subdirectory "$d":
+  pushd $d
+    # this -N disables Makeconf processing, only relevent if you have one.
+    make -N RELEASEDIR=$name TRELEASEDIR=$name/$d release
+  popd
+end
+
+#tar cf $name.tar $name
+#compress $name.tar
+#echo Remember to rm -rf $name
+
+echo "All done, release directory $name created and filled."

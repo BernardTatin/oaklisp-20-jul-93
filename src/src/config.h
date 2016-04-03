@@ -128,7 +128,7 @@
 
 
 
-#ifdef __STDC__
+#if defined(__STDC__ ) && !defined(__SunOS)
 #define PROTOTYPES
 #endif
 

@@ -32,30 +32,57 @@ int signal_poll_flag = 0;
 
 #ifdef BSD_OR_MACH
 
+#if !defined(__SunOS)
 static struct sigvec signal_trap_vec = {0,0,0};
+#else
+struct sigaction action;
+#endif
 
 /*ARGSUSED*/
+#if !defined(__SunOS)
 static INTR_HANDLER_TYPE intr_proc(sig,code,scp)
      int sig, code;
      struct sigcontext *scp;
 {
   signal_poll_flag += 1;
 }
+#else
+static void intr_proc(int sig, siginfo_t *scp, void *code)
+{
+  signal_poll_flag += 1;
+}
+#endif
 
 void enable_signal_polling()
 {
   signal_poll_flag = 0;
+#if !defined(__SunOS)
   signal_trap_vec.sv_handler = intr_proc;
   if (sigvec(SIGINT, &signal_trap_vec, (struct sigvec *)NULL))
     fprintf(stderr, "Unable to enable signal polling.\n");
+#else
+  action._funcptr._sigaction = intr_proc;
+  action.sa_flags = 0;
+  if ( sigaction (SIGINT, &action, NULL)) {
+    fprintf(stderr, "Unable to enable signal polling.\n");
+  }
+#endif
 }
 
 void disable_signal_polling()
 {
   signal_poll_flag = 0;
+#if !defined(__SunOS)
   signal_trap_vec.sv_handler=SIG_DFL;
   if (sigvec(SIGINT, &signal_trap_vec, (struct sigvec *)NULL))
     fprintf(stderr, "Unable to disable signal polling.\n");
+#else
+  action._funcptr._sigaction = SIG_DFL;
+  action.sa_flags = 0;
+  if ( sigaction (SIGINT, &action, NULL)) {
+    fprintf(stderr, "Unable to disable signal polling.\n");
+  }
+#endif
 }
 #endif BSD_OR_MACH
 

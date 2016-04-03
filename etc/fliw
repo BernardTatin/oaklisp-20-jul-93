@@ -1,0 +1,68 @@
+#!/bin/csh -f
+if (($#argv < 4) && ($#argv != 2)) then
+  set foo = "$0"
+  echo "Usage: $foo:t parent-world child-world locale file1.oa ..."
+  exit 1
+endif
+
+if (! $?OAKPATH) setenv OAKPATH /usr/misc/.oaklisp
+
+set parent = $1
+set child  = $2
+
+if ($#argv != 2) then
+  set locale = $3
+  set oafiles = ($argv[4-])
+  set tfile = /usr/tmp/f$$.oak
+  set q = '"'
+
+  echo ";;; Temporary world augmentation file." > $tfile
+  foreach f ($oafiles)
+    echo "(load $q$f$q $locale)" >> $tfile
+  end
+  echo "(exit)" >> $tfile
+  echo ";;; eof." >> $tfile
+
+  set tooak = "(load $q$tfile$q)"
+else
+  set tooak = ""
+endif
+
+unset del
+
+if (-e $child) then
+  echo "Sequestering $child."
+  set del = $child~~
+  mv $child $del
+endif
+
+set switches = (-d -b -G)
+if ($?OAKFLIW) then
+  set switches = ($OAKFLIW $switches) 
+endif
+if ($?OAKLISP) then
+  set switches = ($OAKLISP $switches) 
+endif
+
+echo $tooak | $OAKPATH/etc/emulator $switches -f $child $parent
+
+set emuexit = $status
+
+echo "Oaklisp terminated with status $emuexit."
+
+if ($emuexit != 0) then
+  echo "Reverting $child."
+  rm -f $child
+  if ($?del) then
+    mv $del $child
+  endif
+  exit $emuexit
+endif
+
+if ($?del) then
+  rm -f $del
+endif
+
+if ($?tfile) then
+  rm -f $tfile
+endif

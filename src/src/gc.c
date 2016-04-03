@@ -3,6 +3,9 @@
 /* This file contains the garbage collector. */
 
 #include <stdio.h>
+#if defined(__SunOS)
+#include <stdlib.h>
+#endif
 #include "emulator.h"
 #include "stacks.h"
 #include "gc.h"

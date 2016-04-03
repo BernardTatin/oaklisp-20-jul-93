@@ -17,11 +17,14 @@
 #
 # LIBS = $$LDPATH -lmisc -lmalloc -lc_s
 #
+CC = cc
+LD = ld
+
 
 all: emulator
 
 OBJF1 = emulator.o mymalloc.o worldio.o gc.o stacks.o weak.o 
-OBJF2 = signal.o $(EXTRAS)
+OBJF2 = signal.o $(EXTRAS) instrs.o
 OBJFILES = $(OBJF1) $(OBJF2)
 INCLUDES = emulator.h config.h stacks.h gc.h
 MISC = Makefile instruction-table.oak
@@ -41,6 +44,9 @@ gc.o weak.o: gc.h
 
 emulator: $(OBJFILES)
 	$(CC) $(CFLAGS) $(LDCFLAGS) -o $@ $(OBJFILES)
+
+clean:
+	$(RM) $(OBJFILES)
 
 instrs.c: instruction-table.oak ../../mac/assembler.oak
 	echo '(set (fluid current-locale) compiler-locale)	\

@@ -1,6 +1,9 @@
 /*  Copyright (C) 1987 Barak Pearlmutter and Kevin Lang    */
 
 #include <stdio.h>
+#if defined(__SunOS)
+#include <stdlib.h>
+#endif
 #include "emulator.h"
 
 
