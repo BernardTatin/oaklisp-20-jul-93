@@ -9,9 +9,7 @@ extern bool trace_segs;
 #endif
 
 /* This routine flushes out the stack buffer, leaving amount_to_leave. */
-void flush_buffer(pstk, amount_to_leave)
-     stack *pstk;
-     int amount_to_leave;
+void flush_buffer(stack *pstk, const int amount_to_leave)
 {
   segment *s;
   long i , count = pstk->ptr - (&pstk->data[0]-1)
@@ -73,9 +71,7 @@ void flush_buffer(pstk, amount_to_leave)
    the buffer has at least n+1 values in it, so that at least n values could
    be popped off without underflow. */
 
-void unflush_buffer(pstk, n)
-     stack *pstk;
-     int n;
+void unflush_buffer(stack *pstk, const int n)
 {
   long i
     , number_to_pull = 0
@@ -135,8 +131,7 @@ void unflush_buffer(pstk, n)
 
 
 
-void dump_stack_proc(pstk)
-     stack *pstk;
+void dump_stack_proc(stack *pstk)
 {
   ref *p;
 
@@ -155,8 +150,7 @@ void dump_stack_proc(pstk)
 
 
 
-void init_stk(pstk)
-     stack *pstk;
+void init_stk(stack *pstk)
 {
 #ifdef MALLOC_STACK_BUFFER
   pstk->data = (ref *)my_malloc((long)(sizeof(ref) * STACK_BUFFER_SIZE));
