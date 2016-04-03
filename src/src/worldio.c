@@ -11,9 +11,7 @@
 
 /* These are for making the world zero-based and contiguous in dumps. */
 
-ref contig(r, just_new)
-     ref r;
-     bool just_new;
+ref contig(ref r, const bool just_new)
 {
   ref *p = ANY_TO_PTR(r);
 
@@ -90,8 +88,7 @@ long flread(ptr, size_of_ptr, count, stream)
 #endif
 
 	
-ref read_ref(d)  /* Read a reference from a file: */
-     FILE *d;
+ref read_ref(FILE *d)  /* Read a reference from a file: */
 {
   int c;
   ref a=0;
@@ -150,8 +147,7 @@ ref read_ref(d)  /* Read a reference from a file: */
 
 
 
-FILE *prompt_file(the_prompt,mode)
-     char *the_prompt, *mode;
+FILE *prompt_file(char *the_prompt, char *mode)
 {
   char filename[80];
   FILE *fp;
@@ -177,8 +173,7 @@ FILE *prompt_file(the_prompt,mode)
 
 #define REFBUFSIZ 1024
 
-void dump_binary_world(just_new)
-     bool just_new;
+void dump_binary_world(const bool just_new)
 {
   FILE *wfp = NULL;
   ref *memptr;
@@ -269,8 +264,7 @@ void dump_binary_world(just_new)
 
 
 
-void dump_ascii_world(just_new)
-     bool just_new;
+void dump_ascii_world(const bool just_new)
 {
   ref *memptr, theref;
   long	i;
@@ -336,8 +330,7 @@ void dump_ascii_world(just_new)
 
 
 
-void dump_world(just_new)
-     bool just_new;
+void dump_world(const bool just_new)
 {
   if (dump_binary)
     dump_binary_world(just_new);
@@ -347,10 +340,7 @@ void dump_world(just_new)
 
 
 
-void reoffset(baseAddr, start, count)
-	register ref	baseAddr;
-	register ref	*start;
-	register long	count;
+void reoffset(ref baseAddr, ref *start, long count)
 {
   register long	index;
   register ref	*next;
@@ -363,8 +353,7 @@ void reoffset(baseAddr, start, count)
   }
 }
 
-void read_world(str)
-     char *str;
+void read_world(char *str)
 {
   FILE *d;
   int magichar;
@@ -456,8 +445,7 @@ void read_world(str)
 
 
 /* This is used to decode the -h option on the command line. */
-long string_to_int(string)
-     char *string;
+long string_to_int(char *string)
 {
   long n = 0;
   char *cs = string;

@@ -340,7 +340,7 @@ void printref(), init_wp();
 
 void read_world();
 ref read_ref();
-void dump_world();
+void dump_world(const bool just_new);
 
 long string_to_int();
 
@@ -351,7 +351,12 @@ void rebuild_wp_hashtable();
 
 void gc(bool pre_dump, bool full_gc, char *reason, long amount);
 void gc_printref();
-void enable_signal_polling(), disable_signal_polling(), clear_signal();
+void enable_signal_polling(), disable_signal_polling();
+
+static inline void clear_signal(void)
+{
+  signal_poll_flag = 0;
+}
 #endif
 
 #else

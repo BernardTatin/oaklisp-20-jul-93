@@ -61,7 +61,7 @@ wp_hashtable_entry wp_hashtable[WP_HASHTABLE_SIZE];
 /* The following magic number is floor( 2^32 * (sqrt(5)-1)/2 ). */
 #define wp_key(r) ((unsigned long) 0x9E3779BB*(r)) /* >>10, == 2654435771L */
 
-void init_wp()
+void init_wp(void)
 {
 #ifdef MALLOC_WP_TABLE
   wp_table = (ref *)my_malloc((long)(sizeof(ref) * WP_TABLE_SIZE));
@@ -72,8 +72,7 @@ void init_wp()
 
 
 /* Register r as having weak pointer wp. */
-void enter_wp(r, wp)
-     ref r, wp;
+void enter_wp(ref r, ref wp)
 {
   unsigned long i = wp_key(r) % WP_HASHTABLE_SIZE;
 
@@ -93,7 +92,7 @@ void enter_wp(r, wp)
 
 /* Rebuild the weak pointer hash table from the information in the table
    that takes weak pointers to objects. */
-void rebuild_wp_hashtable()
+void rebuild_wp_hashtable(void)
 {
   unsigned long i;
   
@@ -111,8 +110,7 @@ void rebuild_wp_hashtable()
 
 /* Return weak pointer associated with obj, making a new one if necessary. */
 
-ref ref_to_wp(r)
-     ref r;
+ref ref_to_wp(ref r)
 {
   unsigned long i = wp_key(r) % WP_HASHTABLE_SIZE;
 
@@ -135,7 +133,7 @@ ref ref_to_wp(r)
 
 
 
-void wp_hashtable_distribution()
+void wp_hashtable_distribution(void)
 {
   unsigned long i;
 
@@ -169,7 +167,7 @@ void wp_hashtable_distribution()
 
 
 
-unsigned long post_gc_wp()
+unsigned long post_gc_wp(void)
 {
   /* Scan the weak pointer table.  When a reference to old space is found,
      check if the location has a forwarding pointer.  If not, discard the
