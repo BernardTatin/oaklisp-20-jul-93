@@ -1,5 +1,5 @@
 # note
-Try to compile oaklisp on Solaris 11
+Try to compile oaklisp on Solaris 11. It works. 
 
 # original _README_
 This directory contains a release of the Oaklisp system.

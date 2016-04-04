@@ -1,0 +1,31 @@
+;; ======================================================================
+;; fact.oak
+;; ======================================================================
+
+
+;; définition classique de la factorielle
+
+	(define _nfact
+	 (lambda(N)
+		;; oaklisp est très sensible au letrec
+		;; pour ce cas
+	  (letrec ((ifact (lambda(k acc)
+					 (if (< k 1)
+					  acc
+					  (ifact (- k 1) (* k acc))))))
+	   (ifact N 1))))
+
+;; équivalent à defgeneric de CLOS?
+(define-instance fact operation)
+
+;; l'ordre n'a pas d'importance
+;; ça marche
+(add-method (fact (number) x)
+  (error "fact integer expected, get -> ~A~%" x))
+
+(add-method (fact (integer) n)
+  (_nfact n))
+
+(add-method (fact (string) str)
+	(error "ça va pas? fact de ~A~%" str))
+
