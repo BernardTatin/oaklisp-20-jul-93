@@ -1,5 +1,8 @@
 *.o
 *.lo
+*.oa
+new.
+new.*
 /src/src/emulator
 /nbproject/
 debug

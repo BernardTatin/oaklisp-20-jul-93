@@ -5,6 +5,7 @@ all: install
 
 install:
 	cd src/src; $(MAKE) emulator
+	cd mac; $(MAKE)
 
 SOURCE = Makefile COPYING
 

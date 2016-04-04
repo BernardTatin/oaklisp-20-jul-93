@@ -2,8 +2,8 @@
 # uncomment one the the following.
 
 # Enable all the speed hacks:
-# DEFINES = -DFAST
-# CFLAGS = -O
+DEFINES = -DFAST
+CFLAGS = -O
 
 # Enable some hopefully unnecessary checks:
 # DEFINES =
