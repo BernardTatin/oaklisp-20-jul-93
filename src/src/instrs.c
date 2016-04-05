@@ -70,7 +70,7 @@ char *ArglessInstrs[] = {
 };
 
 char *Instrs[] = {
-	"#<Undefined IVAR 1038>",		/* 0 */
+	"#<Undefined IVAR 1039>",		/* 0 */
 	"HALT",
 	"LOG-OP",
 	"BLT-STK",

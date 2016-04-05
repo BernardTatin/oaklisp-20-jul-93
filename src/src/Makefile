@@ -24,7 +24,7 @@ LD = ld
 all: emulator
 
 OBJF1 = emulator.o mymalloc.o worldio.o gc.o stacks.o weak.o 
-OBJF2 = signal.o $(EXTRAS) instrs.o
+OBJF2 = signal.o $(EXTRAS) 
 OBJFILES = $(OBJF1) $(OBJF2)
 INCLUDES = emulator.h config.h stacks.h gc.h
 MISC = Makefile instruction-table.oak
