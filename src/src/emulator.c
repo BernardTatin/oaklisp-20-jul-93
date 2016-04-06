@@ -345,6 +345,7 @@ char *oak_c_string(unsigned int len, unsigned long *p) {
 
 
 char *dump_file = NULL;
+char *file_to_load = NULL;
 
 void crunch_args(int argc, char **argv) {
     char *world_name;
@@ -408,6 +409,11 @@ void crunch_args(int argc, char **argv) {
                 argv += 1;
                 dump_file = *argv;
                 break;
+			case 'l':
+                argc -= 1;
+                argv += 1;
+				file_to_load = *argv;
+				break;
             default:
                 (void) printf("Unknown option %s.\n", argv[0]);
                 break;
@@ -428,7 +434,7 @@ void crunch_args(int argc, char **argv) {
         (void) printf("Usage: %s [-icxmSMTFd9bGgQ] [-h bytes] oaklisp-image\n",
                 program_name);
 #else
-        (void) printf("Usage: %s [-TFd9bGgQ] [-h bytes] oaklisp-image\n",
+        (void) printf("Usage: %s [-TFd9bGgQ] [-l lisp-file] [-h bytes] oaklisp-image\n",
                 program_name);
 #endif
         exit(2);
@@ -460,7 +466,11 @@ void crunch_args(int argc, char **argv) {
 int main(int argc, char **argv) {
     unsigned int e_nargs;
 
+	printf("OakLisp hacked version 1.2.1\n");
     crunch_args(argc, argv);
+	if (file_to_load != NULL) {
+		printf("File to load: %s\n", file_to_load);
+	}
 
     /* Get the registers set to the boot code. */
 
