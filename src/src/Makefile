@@ -24,7 +24,8 @@ LD = ld
 all: emulator
 
 OBJF1 = emulator.o mymalloc.o worldio.o gc.o stacks.o weak.o 
-OBJF2 = signal.o $(EXTRAS) instrs.o
+OBJF2 = signal.o $(EXTRAS)
+#  instrs.o
 OBJFILES = $(OBJF1) $(OBJF2)
 INCLUDES = emulator.h config.h stacks.h gc.h
 MISC = Makefile instruction-table.oak
@@ -33,7 +34,9 @@ GRAVY = instrs.c Proto.h
 CFILES = $(OBJFILES:.o=.c)
 
 Proto.h: $(CFILES) $(INCLUDES)
-	/usr/misc/.case/bin/mkptypes -e -A -x $(CFILES) > Proto.h
+		touch Proto.h
+
+# /usr/misc/.case/bin/mkptypes -e -A -x $(CFILES) > Proto.h
 
 signal.o: config.h
 $(OBJF1): config.h emulator.h Proto.h
